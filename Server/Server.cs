@@ -40,11 +40,17 @@ public static partial class Utils
         {
             response.ContentType = "image/jpeg";
         }
-        else if (fileExtension == ".png")
+        else
         {
             response.ContentType = "image/png";
         }
 
+        response.SendFile(filePath);
+    }
+
+    public static void SendHtml(this HttpListenerResponse response, string filePath)
+    {
+        response.ContentType = "text/html";
         response.SendFile(filePath);
     }
 
