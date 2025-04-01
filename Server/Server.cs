@@ -71,6 +71,28 @@ public static partial class Utils
 
         response.Close();
     }
+
+    public static Dictionary<string, string>? ReadPOST(this HttpListenerRequest request)
+    {
+        if (request.HttpMethod == "POST")
+        {
+            using (StreamReader reader = new StreamReader(request.InputStream, request.ContentEncoding))
+            {
+                string postData = reader.ReadToEnd();
+                var parsedData = System.Web.HttpUtility.ParseQueryString(postData);
+
+                Dictionary<string, string> result = [];
+
+                foreach (string? key in parsedData.AllKeys)
+                {
+                    result.Add(key!, parsedData[key]!);
+                }
+
+                return result;
+            }
+        }
+        return null;
+    }
 }
 
 public abstract class Server : IDisposable
